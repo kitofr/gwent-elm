@@ -33,4 +33,6 @@ emptyRound =
 
 playCard : Round -> Player -> Card -> Round
 playCard round player card =
-  { round | player1 = card :: round.player1 } 
+  case player of
+    Player1 -> { round | player1 = card :: round.player1 } 
+    Player2 -> { round | player2 = card :: round.player2 }
