@@ -7,19 +7,23 @@ import Types exposing (..)
 
 all : Test
 all =
-    describe "Gwent"
-        [
+    describe "Gwent" [
+      describe "A round " [
           test "Player1 play card" <|
           \() ->
               Expect.equal (playCard emptyRound Player1 (Card 1 Melee)) 
                 { player1 = { value = 1, combatType = Melee } :: []
                 , player2 = []
-                , round = 1 } 
+                , round = 1 
+                , playerState = (Playing, Playing) } 
 
          ,test "Player2 play card" <|
           \() ->
               Expect.equal (playCard emptyRound Player2 (Card 1 Melee)) 
                 { player2 = { value = 1, combatType = Melee } :: []
                 , player1 = []
-                , round = 1 } 
-        ]
+                , round = 1 
+                , playerState = (Playing, Playing) 
+                } 
+        ]    
+    ]

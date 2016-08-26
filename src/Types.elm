@@ -7,21 +7,28 @@ type CombatType
 
 type alias Card = { value: Int, combatType: CombatType  }
 
-type Msg
-  = PlayCard Player Card
-  | Pass 
+type Msg = String
 
 type Player 
   = Player1
   | Player2
 
+type PlayerState
+  = Playing
+  | Passed
+
 type alias Round = 
   { round: Int
     ,player1: List Card
     ,player2: List Card
+    ,playerState: (PlayerState, PlayerState)
   } 
 
-type alias Game = { } 
+type alias Game = { 
+  round1: Round
+  , round2: Round
+  , round3: Round
+} 
 
 type alias Model = {
   game: Game
@@ -29,7 +36,7 @@ type alias Model = {
 
 emptyRound : Round
 emptyRound = 
-  { round = 1, player1 = [], player2 = [] }
+  { round = 1, player1 = [], player2 = [], playerState = (Playing, Playing) }
 
 playCard : Round -> Player -> Card -> Round
 playCard round player card =
