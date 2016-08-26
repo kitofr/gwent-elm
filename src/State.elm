@@ -3,7 +3,7 @@ import Types exposing(Model, Msg)
 
 initialState : (Model, Cmd Msg)
 initialState =  
-    ({ }, Cmd.none)
+    ({ game = {} }, Cmd.none)
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =

@@ -11,7 +11,9 @@ type Msg
   = PlayCard Player Card
   | Pass 
 
-type Player = Int
+type Player 
+  = Player1
+  | Player2
 
 type alias Round = 
   { round: Int
@@ -24,3 +26,11 @@ type alias Game = { }
 type alias Model = {
   game: Game
 }
+
+emptyRound : Round
+emptyRound = 
+  { round = 1, player1 = [], player2 = [] }
+
+playCard : Round -> Player -> Card -> Round
+playCard round player card =
+  { round | player1 = card :: round.player1 } 
