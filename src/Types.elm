@@ -5,7 +5,14 @@ type CombatType
   | Ranged
   | Siege
 
-type alias Card = { value: Int, combatType: CombatType  }
+type Faction
+  = Nilfgaard
+  | NorthenRealms
+  | Monsters
+  | Scoiatael
+  | Skellige
+
+type alias Card = { value: Int, combatType: CombatType, faction: Faction }
 
 type Msg = String
 
@@ -40,6 +47,18 @@ emptyRound =
 
 playCard : Round -> Player -> Card -> Round
 playCard round player card =
-  case player of
-    Player1 -> { round | player1 = card :: round.player1 } 
-    Player2 -> { round | player2 = card :: round.player2 }
+  case round.playerState of
+   (Playing, Playing) ->  
+     case player of
+       Player1 -> { round | player1 = card :: round.player1 } 
+       Player2 -> { round | player2 = card :: round.player2 }
+   (Playing, Passed) ->
+     case player of
+       Player1 -> { round | player1 = card :: round.player1 } 
+       Player2 -> round 
+   (Passed, Playing) ->
+     case player of
+       Player1 -> round
+       Player2 -> { round | player2 = card :: round.player2 }
+   (Passed, Passed) ->
+     round
