@@ -77,18 +77,19 @@ all =
                   , turn = Player1 })
        ]    
        , describe "the score" [
-          test "is equal to the card value total" <|
+          test "score starts at 0" <|
           \() ->  
             Expect.equal (score emptyRound) (0,0)
 
          ,test "is equal to the card value total" <|
           \() ->  
-            let round = (playCard (Started emptyRound) 
+            let turn1 = (playCard (Started emptyRound) 
                                   Player1 
-                                  (Card 1 Melee Skellige)) 
-                        |> getRound
+                                  (Card 1 Melee Skellige))
+                turn2 = (playCard turn1 Player2 (Card 7 Ranged Monsters))
+                turn3 = (playCard turn2 Player1 (Card 2 Ranged Skellige))
             in
-                Expect.equal (score round) (1,0)
+                Expect.equal (score (getRound turn3)) (3,7)
        ]
     ]
   ]
