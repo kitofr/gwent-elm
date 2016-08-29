@@ -1,8 +1,6 @@
 module Types exposing (..)
 type Msg = String
-type alias Model = {
-  game: GameState
-}
+type alias Model = Int
 
 type CombatType
   = Melee
