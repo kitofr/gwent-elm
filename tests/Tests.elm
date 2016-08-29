@@ -36,7 +36,25 @@ all =
                   , playerState = (Passed, Playing) 
                   , turn = Player2 } )
 
-         ,test "Can't play card after a pass" <|
+        ,test "Player2 pass" <|
+          \() -> 
+            Expect.equal (pass (Started emptyRound) Player2) 
+              (Started { player2 = []
+              , player1 = []
+              , round = 1 
+              , playerState = (Playing, Passed) 
+              , turn = Player1 } )
+
+         ,test "Both passes ends round" <|
+           \() ->
+             Expect.equal (pass (pass (Started emptyRound) Player1) Player2)
+              (Finished { player2 = []
+              , player1 = []
+              , round = 1 
+              , playerState = (Passed, Passed) 
+              , turn = Player2 })
+
+         ,test "Play card after a pass is noop" <|
            \() ->
              let roundState = (Finished { emptyRound | playerState = (Passed, Playing) })
              in
