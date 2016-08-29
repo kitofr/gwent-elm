@@ -27,8 +27,8 @@ all =
                   , round = 1 
                   , playerState = (Playing, Playing) 
                   , turn = Player1 } )
-
-       ], describe "Passing" [
+       ]
+       , describe "Passing" [
          test "Player1 pass" <|
            \() ->
               Expect.equal (pass (Started emptyRound) Player1) 
@@ -56,7 +56,8 @@ all =
               , playerState = (Passed, Passed) 
               , turn = Player2 })
 
-      ], describe "Special scenarios" [
+      ]
+      , describe "Special scenarios" [
          test "Play card after a pass is noop" <|
            \() ->
              let roundState = (Finished { emptyRound | playerState = (Passed, Playing) })
@@ -74,6 +75,12 @@ all =
                   , round = 1
                   , playerState = (Playing, Passed)
                   , turn = Player1 })
-        ]    
+       ]    
+       , describe "the score" [
+          test "is equal to the card value total" <|
+          \() ->  
+            Expect.equal (score emptyRound) (0,0)
+
+       ]
     ]
   ]
