@@ -15,7 +15,8 @@ all =
                 (Started { player1 = { value = 1, combatType = Melee, faction = Skellige } :: []
                   , player2 = []
                   , round = 1 
-                  , playerState = (Playing, Playing) } )
+                  , playerState = (Playing, Playing) 
+                  , turn = Player2 } )
 
          ,test "Player2 play card" <|
           \() ->
@@ -24,7 +25,7 @@ all =
                   , player1 = []
                   , round = 1 
                   , playerState = (Playing, Playing) 
-                  } )
+                  , turn = Player1 } )
          ,test "Can't play card after a pass" <|
            \() ->
              let roundState = (Finished { emptyRound | playerState = (Passed, Playing) })

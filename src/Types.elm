@@ -30,6 +30,7 @@ type alias Round =
     ,player1: List Card
     ,player2: List Card
     ,playerState: (PlayerState, PlayerState)
+    ,turn: Player -- Maybe ?
   } 
 
 type alias Game = { 
@@ -48,7 +49,11 @@ type alias Model = {
 
 emptyRound : Round
 emptyRound = 
-  { round = 1, player1 = [], player2 = [], playerState = (Playing, Playing) }
+  { round = 1
+  , player1 = []
+  , player2 = []
+  , playerState = (Playing, Playing)
+  , turn = Player1 }
 
 playCard : RoundState -> Player -> Card -> RoundState
 playCard roundState player card =
@@ -57,16 +62,16 @@ playCard roundState player card =
       case round.playerState of
        (Playing, Playing) ->  
          case player of
-           Player1 -> (Started { round | player1 = card :: round.player1 } )
-           Player2 -> (Started { round | player2 = card :: round.player2 } )
+           Player1 -> (Started { round | player1 = card :: round.player1, turn = Player2 } )
+           Player2 -> (Started { round | player2 = card :: round.player2, turn = Player1 } )
        (Playing, Passed) ->
          case player of
-           Player1 -> (Started { round | player1 = card :: round.player1 } )
+           Player1 -> (Started { round | player1 = card :: round.player1, turn = Player1 } )
            Player2 -> (Started round )
        (Passed, Playing) ->
          case player of
            Player1 -> (Started round)
-           Player2 -> (Started { round | player2 = card :: round.player2 })
+           Player2 -> (Started { round | player2 = card :: round.player2, turn = Player2 })
        (Passed, Passed) ->
          (Finished round)
     _ -> roundState
