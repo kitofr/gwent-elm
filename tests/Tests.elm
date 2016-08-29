@@ -60,5 +60,15 @@ all =
              in
               Expect.equal (playCard roundState Player1 (Card 1 Melee Skellige))
                 roundState
+         ,test "Passes does not clear played cards" <|
+           \() ->
+             let turn1 = (playCard (Started emptyRound) Player1 (Card 1 Melee Skellige))
+             in 
+                Expect.equal (pass turn1 Player2)
+                  (Started { player2 = []
+                  , player1 = { value = 1, combatType = Melee, faction = Skellige } :: []
+                  , round = 1
+                  , playerState = (Playing, Passed)
+                  , turn = Player1 })
         ]    
     ]
