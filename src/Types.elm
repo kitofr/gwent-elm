@@ -1,5 +1,8 @@
 module Types exposing (..)
 type Msg = String
+type alias Model = {
+  game: GameState
+}
 
 type CombatType
   = Melee
@@ -34,10 +37,6 @@ type alias Round =
 type RoundState 
   = Started Round
   | Finished Round
-
-type alias Model = {
-  game: Game
-}
 
 emptyRound : Round
 emptyRound = 
