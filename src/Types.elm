@@ -1,4 +1,5 @@
 module Types exposing (..)
+type Msg = String
 
 type CombatType
   = Melee
@@ -14,13 +15,10 @@ type Faction
 
 type alias Card = { value: Int, combatType: CombatType, faction: Faction }
 
-type Msg = String
-
 type Player 
   = Player1
   | Player2
 
--- Turn
 type PlayerState
   = Playing
   | Passed
@@ -32,12 +30,6 @@ type alias Round =
     ,playerState: (PlayerState, PlayerState)
     ,turn: Player -- Maybe ?
   } 
-
-type alias Game = { 
-  round1: Round
-  , round2: Round
-  , round3: Round
-} 
 
 type RoundState 
   = Started Round
@@ -53,7 +45,8 @@ emptyRound =
   , player1 = []
   , player2 = []
   , playerState = (Playing, Playing)
-  , turn = Player1 }
+  , turn = Player1 -- coin toss
+  }
 
 pass : RoundState -> Player -> RoundState
 pass roundState player =
@@ -96,3 +89,12 @@ playCard roundState player card =
        (Passed, Passed) ->
          (Finished round)
     _ -> roundState
+
+score : Round -> (Int, Int)
+score round =
+ (0,0)
+
+type alias Game = { 
+  rounds: (Round, Round, Round)
+} 
+
