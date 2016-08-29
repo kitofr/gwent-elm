@@ -45,6 +45,7 @@ emptyRound =
   , turn = Player1 -- coin toss
   }
 
+--TODO Enforce that you can't play if it is not your turn!
 pass : RoundState -> Player -> RoundState
 pass roundState player =
   case roundState of
@@ -66,6 +67,7 @@ pass roundState player =
          (Finished round)
     _ -> roundState
 
+--TODO Enforce that you can't play if it is not your turn!
 playCard : RoundState -> Player -> Card -> RoundState
 playCard roundState player card =
   case roundState of
