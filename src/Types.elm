@@ -55,6 +55,27 @@ emptyRound =
   , playerState = (Playing, Playing)
   , turn = Player1 }
 
+pass : RoundState -> Player -> RoundState
+pass roundState player =
+  case roundState of
+    Started round ->
+      case round.playerState of
+       (Playing, Playing) ->  
+         case player of
+           Player1 -> (Started { round | playerState = (Passed, Playing), turn = Player2 } )
+           Player2 -> (Started { round | playerState = (Playing, Passed), turn = Player1 } )
+       (Playing, Passed) ->
+         case player of
+           Player1 -> (Finished { round | playerState = (Passed, Passed) } )
+           Player2 -> roundState 
+       (Passed, Playing) ->
+         case player of
+           Player1 -> roundState
+           Player2 -> (Finished { round | playerState = (Passed, Passed)  })
+       (Passed, Passed) ->
+         (Finished round)
+    _ -> roundState
+
 playCard : RoundState -> Player -> Card -> RoundState
 playCard roundState player card =
   case roundState of
