@@ -9,6 +9,7 @@ all : Test
 all =
     describe "Gwent" [
       describe "A round " [
+        describe "Play card" [
           test "Player1 play card, becomes Player2s turn" <|
           \() ->
               Expect.equal (playCard (Started emptyRound) Player1 (Card 1 Melee Skellige)) 
@@ -27,7 +28,8 @@ all =
                   , playerState = (Playing, Playing) 
                   , turn = Player1 } )
 
-         ,test "Player1 pass" <|
+       ], describe "Passing" [
+         test "Player1 pass" <|
            \() ->
               Expect.equal (pass (Started emptyRound) Player1) 
                 (Started { player2 = []
@@ -54,12 +56,14 @@ all =
               , playerState = (Passed, Passed) 
               , turn = Player2 })
 
-         ,test "Play card after a pass is noop" <|
+      ], describe "Special scenarios" [
+         test "Play card after a pass is noop" <|
            \() ->
              let roundState = (Finished { emptyRound | playerState = (Passed, Playing) })
              in
               Expect.equal (playCard roundState Player1 (Card 1 Melee Skellige))
                 roundState
+
          ,test "Passes does not clear played cards" <|
            \() ->
              let turn1 = (playCard (Started emptyRound) Player1 (Card 1 Melee Skellige))
@@ -72,3 +76,4 @@ all =
                   , turn = Player1 })
         ]    
     ]
+  ]
