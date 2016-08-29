@@ -20,6 +20,7 @@ type Player
   = Player1
   | Player2
 
+-- Turn
 type PlayerState
   = Playing
   | Passed
@@ -37,6 +38,10 @@ type alias Game = {
   , round3: Round
 } 
 
+type RoundState 
+  = Started Round
+  | Finished Round
+
 type alias Model = {
   game: Game
 }
@@ -45,20 +50,23 @@ emptyRound : Round
 emptyRound = 
   { round = 1, player1 = [], player2 = [], playerState = (Playing, Playing) }
 
-playCard : Round -> Player -> Card -> Round
-playCard round player card =
-  case round.playerState of
-   (Playing, Playing) ->  
-     case player of
-       Player1 -> { round | player1 = card :: round.player1 } 
-       Player2 -> { round | player2 = card :: round.player2 }
-   (Playing, Passed) ->
-     case player of
-       Player1 -> { round | player1 = card :: round.player1 } 
-       Player2 -> round 
-   (Passed, Playing) ->
-     case player of
-       Player1 -> round
-       Player2 -> { round | player2 = card :: round.player2 }
-   (Passed, Passed) ->
-     round
+playCard : RoundState -> Player -> Card -> RoundState
+playCard roundState player card =
+  case roundState of
+    Started round ->
+      case round.playerState of
+       (Playing, Playing) ->  
+         case player of
+           Player1 -> (Started { round | player1 = card :: round.player1 } )
+           Player2 -> (Started { round | player2 = card :: round.player2 } )
+       (Playing, Passed) ->
+         case player of
+           Player1 -> (Started { round | player1 = card :: round.player1 } )
+           Player2 -> (Started round )
+       (Passed, Playing) ->
+         case player of
+           Player1 -> (Started round)
+           Player2 -> (Started { round | player2 = card :: round.player2 })
+       (Passed, Passed) ->
+         (Finished round)
+    _ -> roundState
