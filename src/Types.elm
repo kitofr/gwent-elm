@@ -87,9 +87,19 @@ playCard roundState player card =
          (Finished round)
     _ -> roundState
 
+getRound : RoundState -> Round
+getRound roundState =
+  case roundState of
+    Started round -> round
+    Finished round -> round
+
 score : Round -> (Int, Int)
 score round =
- (0,0)
+  let sum cards = List.map (\x -> x.value) cards |> List.sum
+      p1Score = sum round.player1
+      p2Score = sum round.player2
+  in
+      (p1Score,p2Score)
 
 type alias Game = { 
   rounds: (Round, Round, Round)

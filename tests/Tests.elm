@@ -81,6 +81,14 @@ all =
           \() ->  
             Expect.equal (score emptyRound) (0,0)
 
+         ,test "is equal to the card value total" <|
+          \() ->  
+            let round = (playCard (Started emptyRound) 
+                                  Player1 
+                                  (Card 1 Melee Skellige)) 
+                        |> getRound
+            in
+                Expect.equal (score round) (1,0)
        ]
     ]
   ]
